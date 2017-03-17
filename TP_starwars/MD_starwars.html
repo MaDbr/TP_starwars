@@ -1,0 +1,316 @@
+<html>
+<head>
+    <style type="text/css">
+        div {
+            border: solid black 1px;
+            display: inline-block;
+            padding: 10px;
+            margin: 10px;
+            font-size: 1.3em;
+        }
+
+        .selected {
+            color:blue;
+        }
+    </style>
+</head>
+
+<body>
+
+  <h1> Exo 1 : Afficher la citation du personnage en cliquant sur son nom </h1>
+  <div id="root_exo1"></div>
+
+  <h1> Exo 2 : Generer une citation aleatoirement </h1>
+  <div id="root_exo2"></div>
+
+  <h1> Exo 3 : Afficher la citation du personnage en cliquant sur son image </h1>
+  <div id="root_exo3"></div>
+
+    <script type="text/javascript" src="react/react.js"></script>
+    <script type="text/javascript" src="react/JSXTransformer.js"></script>
+
+   <script type="text/javascript">
+
+var quotes = [{
+  'author': 'Yoda',
+  'quote': 'When 900 years old, you reach, Look as good, you will not.'
+}, {
+  'author': 'Senator palpatine',
+  'quote': 'The Dark Side of the Force is the pathway to many abilities some consider to be, Unnatural.'
+}, {
+  'author': 'Count Dooku',
+  'quote': 'I sense great fear in you, Skywalker. You have hate, you have anger, but you don\'t use them.'
+}, {
+  'author': 'Darth Vader',
+  'quote': 'Luke, you can destroy the Emperor. He has foreseen this. It is your destiny. Join me, and together we can rule the galaxy as father and son.'
+}, {
+  'author': 'Princess leia',
+  'quote': 'Aren\'t you a little short for a storm trooper?'
+}, {
+  'author': 'Yoda',
+  'quote': 'Mmm. Lost a planet, Master Obi-Wan has. How embarrassing.'
+}, {
+  'author': 'Qui-Gon Jinn',
+  'quote': 'Your focus determines your reality'
+}, {
+  'author': 'Yoda',
+  'quote': 'Do. Or do not. There is no try.'
+}, {
+  'author': 'Obi-Wan-Kenobi',
+  'quote': 'In my experience there is no such thing as luck.'
+}, {
+  'author': 'Yoda',
+  'quote': 'If once you start down the dark side, forever will it dominate your destiney, consume you it will, as it did Obi-Wan\'s apprentice'
+}, {
+  'author': 'Darth Vader',
+  'quote': 'The Force is strong with this one.'
+}];
+
+var quotes_tab = []
+var author = []
+
+var images = {};
+
+images['Princess leia'] = 'images/leia.jpg';
+images['Yoda'] = 'images/yoda.jpg';
+images['Senator palpatine'] = 'images/palpatine.jpg';
+images['Obi-Wan-Kenobi'] = 'images/kenobi.jpg';
+images['Count Dooku'] = 'images/comtedooku.jpg';
+images['Qui-Gon Jinn'] = 'images/quigonjinn.jpg';
+images['Darth Vader'] = 'images/darkvador.jpg';
+
+
+
+
+
+for (var i =0;i<quotes.length;i++)
+{
+
+author.push(quotes[i].author);
+
+quotes_tab.push(quotes[i].quote);
+
+}
+
+
+    </script>
+
+    <script type="text/jsx">
+
+
+    // Exo 1 : Display a character's quote by clicking on his name
+
+    var Tree_Exo1 =  React.createClass({
+        render : function () {
+            return (<div >
+                <Letters_Exo1 onLetterSelected={this.selectLetter}/>
+                <Score letter={this.state.letter}/>
+            </div>);
+        },
+
+        getInitialState : function() {
+            return{
+                letter : ''
+            }
+        },
+
+        selectLetter : function (newLetter) {
+            return this.setState({letter : newLetter});
+        }
+
+
+
+    });
+
+
+    var Letters_Exo1 = React.createClass({
+
+        render : function () {
+            var handler = this.props.onLetterSelected;
+
+            return (<div>
+                {quotes.map(function(item) {
+                    return <Letter_Exo1 itemValue={item} whenClick={handler} />;
+
+                })}
+            </div>);
+        },
+
+    });
+
+    var Letter_Exo1 = React.createClass({
+
+        render : function () {
+            var classname = this.state.selected ? 'selected' : '';
+            return (<div className={classname} onClick={this.handleClick}>{this.props.itemValue.author}
+			</div>   );
+        },
+
+        getInitialState : function () {
+            return {selected : false };
+        },
+
+        handleClick : function () {
+            this.props.whenClick(this.props.itemValue);
+            this.setState({selected : true});
+        }
+
+
+    });
+
+
+    var DisplayQuote = React.createClass({
+
+        render : function () {
+            return (<div>
+                La citation de {this.props.letter.author} est "{this.props.letter.quote}"
+            </div>
+
+			);
+        },
+
+
+    });
+
+
+  var Hello = React.createClass({
+
+        render : function () {
+            var output = this.props.word ==='' ? '' : (this.props.word);
+            return (<div>
+                {output}
+            </div>);
+        },
+
+
+    });
+
+
+// Exo 2 : Display a random quote by clicking a button
+
+function RandomQuote(Nbcaracteres)
+{
+	var caracteres = quotes_tab;
+	var laCitation ='';
+	for(i = 0; i < Nbcaracteres; i++)
+	{
+		laCitation = laCitation + caracteres[Math.floor(Math.random()*caracteres.length)];
+	}
+	return laCitation;
+}
+
+
+
+	 var Tree_Exo2 =  React.createClass({
+        render : function () {
+            return (<div>
+			<button onClick= {this.selectLetter}> Random Quote : </button>
+      <Hello word={RandomQuote(1)}/>
+            </div>);
+        },
+
+        getInitialState : function() {
+            return{
+                newWord : ''
+            }
+        },
+
+        updateWord : function (e) {
+            this.setState({newWord :  e.target.value})
+        },
+ selectLetter : function (newLetter) {
+            return this.setState({letter : newLetter});
+        }
+
+    });
+
+
+
+
+// Exo 3 : Display a character's quote by clicking on his picture
+
+		 var Tree_Exo3 =  React.createClass({
+        render : function () {
+            return (<div >
+                <Letters_Exo3 onLetterSelected={this.selectLetter}/>
+                <Score letter={this.state.letter}/>
+            </div>);
+        },
+
+        getInitialState : function() {
+            return{
+                letter : ''
+            }
+        },
+
+        selectLetter : function (newLetter) {
+            return this.setState({letter : newLetter});
+        }
+
+
+
+    });
+
+
+    var Letters_Exo3 = React.createClass({
+
+        render : function () {
+            var handler = this.props.onLetterSelected;
+
+            return (<div>
+                {quotes.map(function(item) {
+                    return <Letter_Exo3 itemValue={item} whenClick={handler} />;
+
+                })}
+            </div>);
+        },
+
+    });
+
+    var Letter_Exo3 = React.createClass({
+
+        render : function () {
+            var classname = this.state.selected ? 'selected' : '';
+            return (<div className={classname} onClick={this.handleClick}><img className="image" src={images[this.props.itemValue.author]} />
+			</div>   );
+        },
+
+        getInitialState : function () {
+            return {selected : false };
+        },
+
+        handleClick : function () {
+            this.props.whenClick(this.props.itemValue);
+            this.setState({selected : true});
+        }
+
+
+    });
+
+
+    var Score = React.createClass({
+
+        render : function () {
+            return (<div>
+                La citation de {this.props.letter.author} est "{this.props.letter.quote}"
+            </div>
+
+			);
+        },
+
+
+    });
+
+
+
+
+	React.render(<Tree_Exo1 />, document.getElementById('root_exo1'));
+	React.render(<Tree_Exo2 />, document.getElementById('root_exo2'));
+	React.render(<Tree_Exo3 />, document.getElementById('root_exo3'));
+
+
+
+
+    </script>
+</body>
+</html>
