@@ -2,15 +2,32 @@
 <head>
     <style type="text/css">
         div {
-            border: solid black 1px;
+            border: solid yellow 1px;
             display: inline-block;
             padding: 10px;
             margin: 10px;
             font-size: 1.3em;
+            background-color: grey;
         }
 
+        button{
+          border: solid black 1px;
+          background-color: yellow;
+          text-align: center;
+        }
+
+        img{
+          margin: 1em 10px 0px 0px;
+          padding-top: 0px;
+          padding-right: 10px;
+          padding-left: 8px;
+          padding-bottom: 0px;
+          display: inline;
+          width: 100px;
+          height: 100px;
+        }
         .selected {
-            color:blue;
+            color:yellow;
         }
     </style>
 </head>
@@ -204,7 +221,7 @@ function RandomQuote(Nbcaracteres)
 	 var Tree_Exo2 =  React.createClass({
         render : function () {
             return (<div>
-			<button onClick= {this.selectLetter}> Random Quote : </button>
+			<button onClick= {this.selectLetter}> Random Quote Button </button>
       <Hello word={RandomQuote(1)}/>
             </div>);
         },
